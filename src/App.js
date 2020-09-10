@@ -37,8 +37,11 @@ class App extends Component {
           searchTerm
         }&limit=89&offset=0&rating=g&lang=en`
       );
-      const {data} = await response.json()
-      const randomGif = randomChoice(data)
+      // convert raw response into json data
+      // const {data} gets the .data part of our response
+      const {data} = await response.json();
+      // grab a random result from our images
+      const randomGif = randomChoice(data);
 
       this.setState((prevState, props) => ({
         ...prevState,
@@ -63,14 +66,14 @@ class App extends Component {
       ...prevState,
       searchTerm: value,
       hintText: value.length > 2 ? `Hit enter to search ${value}` : ''
-    }))
-  }
+    }));
+  };
 
   handleKeyPress = (event) => {
     const {value} = event.target
 
     if (value.length > 2 && event.key === 'Enter')
-      event.preventDefault()
+      // event.preventDefault()
       this.searchGiphy(value)
   }
 
