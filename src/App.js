@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import loader from './images/loader.svg'
+import Gif from './Gif'
 
 const randomChoice = arr => {
   const randIndex = Math.floor(Math.random() * arr.length)
@@ -24,7 +25,8 @@ class App extends Component {
     this.state = {
       searchTerm: '',
       hintText: '',
-      gif: null
+      gif: null,
+      gifs: []
     }
   }
 
@@ -73,18 +75,17 @@ class App extends Component {
   }
 
   render() { 
-    const {searchTerm, gif} = this.state
+    const {searchTerm, gif} = this.state;
     return (
       <div className="page">
         <Header />
         
-        <div className='search grid'>
+        <div className="search grid">
           {/* stack of images */}
           
           {this.state.gifs.map(gif => (
-            <video 
-              className='grid-item video' autoPlay loop src={gif.images.original.mp4}
-            />
+            // spread out all the gif properties into the Gif component
+            <Gif {...gif}/>
           ))}
 
           <input 
