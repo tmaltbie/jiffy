@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import loader from './images/loader.svg'
-import apiKey from './config'
 
 const randomChoice = arr => {
   const randIndex = Math.floor(Math.random() * arr.length)
@@ -37,13 +36,14 @@ class App extends Component {
         }&limit=89&offset=0&rating=g&lang=en`
       );
       const {data} = await response.json()
-      
       const randomGif = randomChoice(data)
-      console.log(randomGif)
 
       this.setState((prevState, props) => ({
         ...prevState,
+        // get the first result and put it in the state
         gif: randomGif,
+        // here we use spread to take the previous gifs and
+        // spread them out, then add new randomGif onto the end
         gifs: [...prevState.gifs, randomGif]
       }))
     } catch (error) {
