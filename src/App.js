@@ -7,9 +7,9 @@ const randomChoice = arr => {
   return arr[randIndex]
 }
 
-const Header = () => (
+const Header = ({clearSearch}) => (
   <div className="header grid">
-    <h1 className="title">Jiffy</h1>
+    <h1 className="title" onClick={clearSearch}>Jiffy</h1>
   </div>
 )
 
@@ -26,7 +26,6 @@ class App extends Component {
       loading: false,
       searchTerm: '',
       hintText: '',
-      gif: null,
       gifs: []
     }
   }
@@ -45,21 +44,31 @@ class App extends Component {
       // convert raw response into json data
       // const {data} gets the .data part of our response
       const {data} = await response.json();
+
+      if(!data.length) {
+        throw `Nothing found for ${searchTerm}`
+      }
+
+
       // grab a random result from our images
       const randomGif = randomChoice(data);
 
       this.setState((prevState, props) => ({
         ...prevState,
-        // get the first result and put it in the state
-        gif: randomGif,
         // here we use spread to take the previous gifs and
         // spread them out, then add new randomGif onto the end
         gifs: [...prevState.gifs, randomGif],
         // turn off loading svg spinner again
-        loading: false
+        loading: false,
+        hintText: `Hint enter to see more ${searchTerm}`
       }))
     } catch (error) {
-
+      this.setState((prevState, props)=> ({
+        ...prevState,
+        hintText: error,
+        loading: false,
+      }))
+      console.log(error)
     }
   }
 
@@ -84,18 +93,28 @@ class App extends Component {
       this.searchGiphy(value)
   }
 
+  clearSearch = () => {
+    this.setState((prevState, props)=> ({
+      ...prevState,
+      loading: false,
+      searchTerm: '',
+      hintText: '',
+      gifs: []
+    }))
+  }
+
   render() { 
     const {searchTerm, gif} = this.state;
     return (
       <div className="page">
-        <Header />
+        <Header clearSearch={this.clearSearch}/>
         
         <div className="search grid">
           {/* stack of images */}
           
-          {this.state.gifs.map(gif => (
+          {this.state.gifs.map((gif, index) => (
             // spread out all the gif properties into the Gif component
-            <Gif {...gif}/>
+            <Gif {...gif} key={index}/>
           ))}
 
           <input 
