@@ -23,6 +23,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       searchTerm: '',
       hintText: '',
       gif: null,
@@ -31,6 +32,10 @@ class App extends Component {
   }
 
   searchGiphy = async searchTerm => {
+    // turn on loading svg spinner
+    this.setState({
+      loading: true
+    })
     try {
       const response = await fetch(
         `https://api.giphy.com/v1/gifs/search?api_key=Jdy7gzrGdpzy81JdQ54HQiZGZxOlgVKR&q=${
@@ -49,7 +54,9 @@ class App extends Component {
         gif: randomGif,
         // here we use spread to take the previous gifs and
         // spread them out, then add new randomGif onto the end
-        gifs: [...prevState.gifs, randomGif]
+        gifs: [...prevState.gifs, randomGif],
+        // turn off loading svg spinner again
+        loading: false
       }))
     } catch (error) {
 
