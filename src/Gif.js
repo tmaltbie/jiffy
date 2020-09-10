@@ -20,7 +20,7 @@ class Gif extends Component {
         className={`grid-item video ${loaded && 'loaded'}`}
         autoPlay
         loop 
-        src={images.original.mp4}
+        src={images.original.url}
         onLoadedData={() => this.setState({loaded: true})}
       />
     )
