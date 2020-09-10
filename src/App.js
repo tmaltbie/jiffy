@@ -35,7 +35,7 @@ class App extends Component {
       const response = await fetch(
         `https://api.giphy.com/v1/gifs/search?api_key=Jdy7gzrGdpzy81JdQ54HQiZGZxOlgVKR&q=${
           searchTerm
-        }&limit=89&offset=0&rating=g&lang=en`
+        }&limit=50&offset=0&rating=g&lang=en`
       );
       // convert raw response into json data
       // const {data} gets the .data part of our response
