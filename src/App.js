@@ -1,15 +1,25 @@
 import React, {Component} from 'react';
-import loader from './images/loader.svg'
-import Gif from './Gif'
+import loader from './images/loader.svg';
+import clearButton from './images/close-icon.svg';
+import Gif from './Gif';
 
 const randomChoice = arr => {
   const randIndex = Math.floor(Math.random() * arr.length)
   return arr[randIndex]
 }
 
-const Header = ({clearSearch}) => (
+// pick out our props inside the header component
+// pass down functions as props as well as things like,
+// numbers, strings, arrays, and/or objects
+const Header = ({clearSearch, hasResults}) => (
   <div className="header grid">
-    <h1 className="title" onClick={clearSearch}>Jiffy</h1>
+    {hasResults ? (
+      <button onClick={clearSearch}>
+        <img src={clearButton}  alt='' /> 
+      </button>
+    ) : (
+      <h1 className="title"> Jiffy </h1> 
+    )}
   </div>
 )
 
@@ -22,6 +32,7 @@ const UserHint = ({loading, hintText}) => (
 class App extends Component {
   constructor(props) {
     super(props);
+    this.textInput = React.createRef();
     this.state = {
       loading: false,
       searchTerm: '',
@@ -101,13 +112,16 @@ class App extends Component {
       hintText: '',
       gifs: []
     }))
+    // grab input and then set focus
+    this.textInput.current.focus();
   }
 
   render() { 
     const {searchTerm, gif} = this.state;
+    const hasResults = this.state.gifs.length
     return (
       <div className="page">
-        <Header clearSearch={this.clearSearch}/>
+        <Header clearSearch={this.clearSearch} hasResults={hasResults}/>
         
         <div className="search grid">
           {/* stack of images */}
@@ -123,6 +137,7 @@ class App extends Component {
             onChange={this.handleChange}
             onKeyPress={this.handleKeyPress}
             value={searchTerm}
+            ref={this.textInput}
           />
         </div>
         {/* here we pass our userHint all of our state using a spread  */}
